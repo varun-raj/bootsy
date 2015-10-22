@@ -1,7 +1,5 @@
 //= require jquery.remotipart
-//= require bootsy/vendor/polyfill
-//= require bootsy/vendor/bootstrap3-wysihtml5.all
-//= require bootsy/vendor/bootstrap.file-input
+//= require bootsy/vendor/trix
 //= require bootsy/area
 //= require bootsy/editor_options
 //= require bootsy/image_template

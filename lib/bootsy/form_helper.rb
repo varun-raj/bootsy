@@ -1,6 +1,8 @@
 module Bootsy
   # Public: Module to include Bootsy in `ActionView::Base`.
   module FormHelper
+    mattr_accessor(:id_count, instance_accessor: false) { 0 }
+
     # Public: Return a textarea element with proper attributes to
     # be loaded as a WYSIWYG editor.
     #
@@ -22,19 +24,24 @@ module Bootsy
     #                                 if a`Container` is found, false otherwise.
     #               :editor_options - The Hash of options with Boolean values
     #                                 usedto enable/disable features of the
-    #                                 editor. Available options are described ib
+    #                                 editor. Available options are described in
     #                                 the Bootsyinitializer file (which is the
     #                                 default for this argument).
-    def bootsy_area(object_name, method, options = {})
+    def bootsy_editor(object_name, method, options = {})
       container = options[:container] || options[:object]
 
       set_gallery_id(container, options)
 
-      text_area(object_name, method, text_area_options(options)) +
+      trix_editor(object_name, method, trix_options(options)) +
         gallery_id_param(object_name, container, options)
     end
 
     private
+
+    def trix_editor(object_name, method, options)
+      content_tag('trix-editor', '', options) +
+        hidden_field(object_name, method, id: options[:input])
+    end
 
     def enable_uploader?(options)
       if options[:uploader] == false
@@ -46,19 +53,6 @@ module Bootsy
       else
         false
       end
-    end
-
-    def tag_class(options)
-      classes =
-        if options[:class].blank?
-          []
-        elsif options[:class].is_a?(Array)
-          options[:class]
-        else
-          [options[:class]]
-        end
-
-      classes << 'bootsy_text_area'
     end
 
     def data_options(options)
@@ -75,15 +69,19 @@ module Bootsy
         .merge(uploader: enable_uploader?(options))
     end
 
-    def text_area_options(options)
-      options.except(
-        :container,
-        :uploader,
-        :editor_options
+    def trix_options(options)
+      options.slice(
+        :class,
+        :placeholder,
+        :autofocus
       ).merge(
-        data: data_options(options),
-        class: tag_class(options)
+        input: input_id(options),
+        data: data_options(options)
       )
+    end
+
+    def input_id(options)
+      options[:id] || "trix-editor-#{Bootsy::FormHelper.id_count += 1}"
     end
 
     def set_gallery_id(container, options)

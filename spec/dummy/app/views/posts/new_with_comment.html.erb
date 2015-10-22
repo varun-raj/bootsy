@@ -19,7 +19,9 @@
   <%= f.text_field :title, class: 'form-control' %>
 
   <%= f.label :content %>
-  <%= f.bootsy_area :content, rows: 16, class: 'form-control' %>
+  <div>
+    <%= f.bootsy_editor :content %>
+  </div>
 
   <h2>Comment</h2>
 
@@ -28,7 +30,9 @@
     <%= sf.text_field :author, class: 'form-control' %>
 
     <%= sf.label :content, 'Comment' %>
-    <%= sf.bootsy_area :content, rows: 8, class: 'form-control' %>
+    <div>
+      <%= sf.bootsy_editor :content %>
+    </div>
   <% end %>
 
   <div class="actions">

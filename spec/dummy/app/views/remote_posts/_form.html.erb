@@ -10,7 +10,10 @@
 
   <div class="form-group">
     <%= f.label :content %>
-    <%= f.bootsy_area :content, rows: 16, class: 'form-control', id: 'remote-post-area' %>
+
+    <div>
+      <%= f.bootsy_editor :content, id: 'remote-post-area' %>
+    </div>
   </div>
 
   <div class="actions">
